@@ -3,7 +3,7 @@ version: 2.1
 # add your orb below, to be used in integration tests (note: a @dev:alpha
 # release must exist.);
 orbs:
-  heroku: circleci/heroku@dev:alpha
+  heroku: sapera/heroku-orb@dev:alpha
   orb-tools: circleci/orb-tools@9.0
 
 # Pipeline parameters
@@ -57,7 +57,7 @@ workflows:
       # store CIRCLE_TOKEN as a project env var or Contexts resource
       # if using Contexts, add your context below
       - orb-tools/publish-dev:
-          orb-name: circleci/heroku
+          orb-name: sapera/heroku-orb
           context: orb-publishing
           requires:
             - orb-tools/pack
@@ -91,7 +91,7 @@ workflows:
       # be skipped.
       # e.g. [semver:patch] will cause a patch version to be published.
       - orb-tools/dev-promote-prod-from-commit-subject:
-          orb-name: circleci/heroku
+          orb-name: sapera/heroku-orb
           context: orb-publishing
           add-pr-comment: true
           bot-token-variable: GHI_TOKEN

@@ -20,10 +20,10 @@ parameters:
     description: The name of the environment variable containing your Heroku API Key.
     type: env_var_name
     default: HEROKU_API_KEY
-  branch:
+  ref:
     type: string
-    description: Deploy the given branch. The default value is your current branch.
-    default: "$CIRCLE_BRANCH"
+    description: Deploy the given refspec. The default value is your current branch. (can deploy tags using `refs/tags/$CIRCLE_TAG`)
+    default: "refs/heads/$CIRCLE_BRANCH"
   force:
     type: boolean
     description: Whether or not to force the git push (i.e. `git push -f`). Defaults to false.
@@ -42,12 +42,12 @@ steps:
             command: heroku maintenance:on --app << parameters.app-name >>
   - run:
       no_output_timeout: << parameters.no_output_timeout >>
-      name: Deploy branch to Heroku via git push
+      name: Deploy ref to Heroku via git push
       command: |
         if << parameters.force >>;then
           force="-f"
         fi
-        git push $force https://heroku:$<< parameters.api-key >>@git.heroku.com/<< parameters.app-name >>.git << parameters.branch >>:master
+        git push $force https://heroku:$<< parameters.api-key >>@git.heroku.com/<< parameters.app-name >>.git << parameters.ref >>:refs/heads/master
   - when:
       condition: << parameters.maintenance-mode >>
       steps:
