@@ -1,0 +1,25 @@
+description: >
+  'A simple example of jobs deploying only "preview-XXX" branches'
+usage:
+  version: 2.1
+  orbs:
+    heroku: sapera/heroku-orb@x.y
+
+  workflows:
+    deploy-preview:
+      jobs:
+        - deploy-branch:
+            filters:
+              branches:
+                only: /preview-*/
+
+  jobs:
+    deploy-branch:
+      executor:
+        heroku/default
+      steps:
+        - checkout
+        - heroku/install
+        - heroku/deploy-via-git:
+            force: true
+            ref: refs/heads/$CIRCLE_BRANCH

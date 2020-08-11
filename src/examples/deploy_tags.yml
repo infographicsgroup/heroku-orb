@@ -1,0 +1,26 @@
+description: >
+  'A simple example of jobs deploying only "release" tags'
+usage:
+  version: 2.1
+  orbs:
+    heroku: sapera/heroku-orb@x.y
+
+  workflows:
+    deploy:
+      jobs:
+        - deploy-tag:
+            filters:
+              tags:
+                only: /release*/
+              branches:
+                ignore: /.*/
+
+  jobs:
+    deploy-tag:
+      executor:
+        heroku/default
+      steps:
+        - checkout
+        - heroku/install
+        - heroku/deploy-via-git:
+            ref: refs/tags/$CIRCLE_TAG

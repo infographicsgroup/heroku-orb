@@ -3,7 +3,7 @@ description: >
 usage:
   version: 2.1
   orbs:
-    heroku: circleci/heroku@x.y
+    heroku: sapera/heroku-orb@x.y
 
   workflows:
     heroku_deploy:
